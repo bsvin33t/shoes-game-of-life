@@ -3,7 +3,8 @@ class GameOfLife
   attr_reader :universe
 
   def initialize
-    @universe = Universe.new
+    dimensions = []
+    @universe = Universe.new(dimensions)
   end
 
 end
