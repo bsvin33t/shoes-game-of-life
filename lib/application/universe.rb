@@ -1,7 +1,10 @@
 class Universe
 
-  def initialize(dimensions)
+  attr_reader :living_cells
+
+  def initialize(dimensions, living_cells=[])
     @dimensions = dimensions
+    @living_cells = living_cells
   end
 
   def valid?

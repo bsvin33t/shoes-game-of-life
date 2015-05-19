@@ -25,4 +25,11 @@ describe 'Universe' do
     universe = Universe.new(dimension)
     expect(universe.cell_at(100, 100)).to be(nil)
   end
+
+  it 'should be seedable with live cells in given dimensions' do
+    dimension = [10, 10]
+    living_cells = [Cell.live(1, 2), Cell.live(0, 5)]
+    universe = Universe.new(dimension, living_cells)
+    expect(universe.living_cells).to eq(living_cells)
+  end
 end
