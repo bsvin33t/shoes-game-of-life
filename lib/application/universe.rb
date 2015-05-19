@@ -1,19 +1,22 @@
 class Universe
 
-  attr_reader :living_cells
 
   def initialize(dimensions, living_cells=[])
     @dimensions = dimensions
-    @living_cells = living_cells
+    add_living_cells(living_cells)
+  end
+
+  def living_cells
+    @living_cells.values
   end
 
   def valid?
-    @dimensions.all? {|value| value >= 0}
+    @dimensions.all? { |value| value >= 0 }
   end
 
   def cell_at(*coordinates)
-    unless out_of_bounds?(coordinates)
-      Cell.new
+    unless out_of_bounds?(coordinates) && !@living_cells[coordinates].nil?
+      @living_cells[coordinates]
     end
   end
 
@@ -24,5 +27,12 @@ class Universe
     @dimensions.zip(coordinates).any? do |dimension, coordinate|
       dimension < coordinate
     end
+  end
+
+  def add_living_cells(cells)
+    @living_cells = Hash.new
+    cells.each { |living_cell|
+      @living_cells[living_cell.location] = living_cell unless out_of_bounds?(living_cell.location)
+    }
   end
 end
