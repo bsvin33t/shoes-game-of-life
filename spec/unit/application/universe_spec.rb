@@ -21,6 +21,13 @@ describe 'Universe' do
     expect(universe.cell_at(5, 4)).to be_a_kind_of(Cell)
   end
 
+  it 'should not contain a cell in an unseeded position' do
+    dimension = [10, 10]
+    cells = [Cell.live(4, 4)]
+    universe = Universe.new(dimension, cells)
+    expect(universe.cell_at(5, 4)).to be(nil)
+  end
+
   it 'should not contain a cell if the given location is beyond the dimension' do
     dimension = [10, 10]
     universe = Universe.new(dimension)
