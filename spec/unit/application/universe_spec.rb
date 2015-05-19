@@ -13,4 +13,16 @@ describe 'Universe' do
     universe = Universe.new(dimensions)
     expect(universe).not_to be_valid
   end
+
+  it 'should contain cell at any given location which is within the dimension' do
+    dimension = [10, 10]
+    universe = Universe.new(dimension)
+    expect(universe.cell_at(5, 4)).to be_a_kind_of(Cell)
+  end
+
+  it 'should not contain a cell if the given location is beyond the dimension' do
+    dimension = [10, 10]
+    universe = Universe.new(dimension)
+    expect(universe.cell_at(100, 100)).to be(nil)
+  end
 end
