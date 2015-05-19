@@ -2,12 +2,8 @@ class Cell
 
   attr_reader :location
 
-  def initialize(location)
+  def initialize(*location)
     @location = location
-  end
-
-  def self.live(*location)
-    Cell.new(location)
   end
 
   def ==(other_cell)

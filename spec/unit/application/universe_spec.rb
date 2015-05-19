@@ -16,14 +16,14 @@ describe 'Universe' do
 
   it 'should contain a living cell at a seeded location which is within the dimension' do
     dimension = [10, 10]
-    cells = [Cell.live(5, 4)]
+    cells = [Cell.new(5, 4)]
     universe = Universe.new(dimension, cells)
     expect(universe.cell_at(5, 4)).to be_a_kind_of(Cell)
   end
 
   it 'should not contain a cell in an unseeded position' do
     dimension = [10, 10]
-    cells = [Cell.live(4, 4)]
+    cells = [Cell.new(4, 4)]
     universe = Universe.new(dimension, cells)
     expect(universe.cell_at(5, 4)).to be(nil)
   end
@@ -36,16 +36,16 @@ describe 'Universe' do
 
   it 'should be seedable with live cells in given dimensions' do
     dimension = [10, 10]
-    living_cells = [Cell.live(1, 2), Cell.live(0, 5)]
+    living_cells = [Cell.new(1, 2), Cell.new(0, 5)]
     universe = Universe.new(dimension, living_cells)
     expect(universe.living_cells).to match_array(living_cells)
   end
 
   it 'should not be seeded with live cells which are beyond the dimnsions' do
     dimension = [10, 10]
-    living_cells = [Cell.live(1, 2), Cell.live(100, 5)]
+    living_cells = [Cell.new(1, 2), Cell.new(100, 5)]
     universe = Universe.new(dimension, living_cells)
-    expect(universe.living_cells).to match_array([Cell.live(1, 2)])
+    expect(universe.living_cells).to match_array([Cell.new(1, 2)])
   end
 
 end
