@@ -29,9 +29,9 @@ class Universe
     end
   end
 
-  def add_living_cells(cells)
+  def add_living_cells(living_cells)
     @living_cells = Hash.new
-    cells.each { |living_cell|
+    living_cells.each { |living_cell|
       @living_cells[living_cell.location] = living_cell unless out_of_bounds?(living_cell.location)
     }
   end

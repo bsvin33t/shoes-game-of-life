@@ -19,7 +19,7 @@ describe Cell do
   end
 
   describe 'increment neighbour' do
-    it 'should incriment the number of neighbours to a cell' do
+    it 'should increment the number of neighbours to a cell' do
       cell = Cell.new(5, 10)
       cell.increment_neighbour
       expect(cell.neighbour_count).to eq(1)
