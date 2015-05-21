@@ -1,6 +1,6 @@
 require 'rspec'
 
-describe 'Universe' do
+describe '2D Universe' do
 
   it 'should be valid only if positive dimensions are passed' do
     dimensions = [10, 10]
@@ -16,16 +16,16 @@ describe 'Universe' do
 
   it 'should contain a living cell at a seeded location which is within the dimension' do
     dimension = [10, 10]
-    cells = [Cell.new(5, 4)]
+    cells = [[5, 4]]
     universe = Universe.new(dimension, cells)
     expect(universe.cell_at(5, 4)).to be_a_kind_of(Cell)
   end
 
   it 'should not contain a cell in an unseeded position' do
     dimension = [10, 10]
-    cells = [Cell.new(4, 4)]
+    cells = [[4, 4]]
     universe = Universe.new(dimension, cells)
-    expect(universe.cell_at(5, 4)).to be(nil)
+    expect(universe.cell_at(8, 8)).to be(nil)
   end
 
   it 'should not contain a cell if the given location is beyond the dimension' do
@@ -36,16 +36,61 @@ describe 'Universe' do
 
   it 'should be seedable with live cells in given dimensions' do
     dimension = [10, 10]
-    living_cells = [Cell.new(1, 2), Cell.new(0, 5)]
-    universe = Universe.new(dimension, living_cells)
+    living_cells = [Cell.alive(1, 2), Cell.alive(0, 5)]
+    living_cell_locations = [[1, 2], [0, 5]]
+    universe = Universe.new(dimension, living_cell_locations)
     expect(universe.living_cells).to match_array(living_cells)
   end
 
   it 'should not be seeded with live cells which are beyond the dimnsions' do
     dimension = [10, 10]
-    living_cells = [Cell.new(1, 2), Cell.new(100, 5)]
-    universe = Universe.new(dimension, living_cells)
-    expect(universe.living_cells).to match_array([Cell.new(1, 2)])
+    living_cell_locations = [[1, 2], [100, 5]]
+    universe = Universe.new(dimension, living_cell_locations)
+    expect(universe.living_cells).to match_array([Cell.alive(1, 2)])
+  end
+
+  context 'when seeding with live cells' do
+    it 'should populate the neighbouring blocks of the live cells with 8 dead cells' do
+      dimension = [10, 10]
+      living_cells = [[1, 2]]
+      universe = Universe.new(dimension, living_cells)
+      expect(universe.cells.count).to eq(9)
+    end
+
+    it 'should populate the neighbouring blocks of the live cells with 5 dead cells' do
+      dimension = [10, 10]
+      living_cells = [[0, 1]]
+      universe = Universe.new(dimension, living_cells)
+      expect(universe.cells.count).to eq(6)
+    end
+
+    it 'should populate the neighbouring blocks of the live cells with 3 dead cells' do
+      dimension = [10, 10]
+      living_cells = [[0, 0]]
+      universe = Universe.new(dimension, living_cells)
+      expect(universe.cells.count).to eq(4)
+    end
+
+    it 'should populate the neighbouring blocks of the live cells with 3 dead cells' do
+      dimension = [10, 10]
+      living_cells = [[9, 9]]
+      universe = Universe.new(dimension, living_cells)
+      expect(universe.cells.count).to eq(4)
+    end
+
+    it 'should populate the neighbouring blocks of the live cells with 3 dead cells' do
+      dimension = [10, 10]
+      living_cells = [[0, 9]]
+      universe = Universe.new(dimension, living_cells)
+      expect(universe.cells.count).to eq(4)
+    end
+
+    it 'should populate the neighbouring blocks of the live cells with 3 dead cells' do
+      dimension = [10, 10]
+      living_cells = [[9, 0]]
+      universe = Universe.new(dimension, living_cells)
+      expect(universe.cells.count).to eq(4)
+    end
   end
 
 end

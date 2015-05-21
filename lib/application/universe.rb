@@ -1,13 +1,15 @@
 class Universe
 
+  attr_reader :cells
 
-  def initialize(dimensions, living_cells=[])
+
+  def initialize(dimensions, living_cells_locations=[])
     @dimensions = dimensions
-    add_living_cells(living_cells)
+    add_cells(living_cells_locations)
   end
 
   def living_cells
-    @living_cells.values
+    @cells.values.select { |cell| cell.status == Cell::ALIVE }
   end
 
   def valid?
@@ -15,8 +17,8 @@ class Universe
   end
 
   def cell_at(*coordinates)
-    unless out_of_bounds?(coordinates) && !@living_cells[coordinates].nil?
-      @living_cells[coordinates]
+    unless out_of_bounds?(coordinates) && !@cells[coordinates].nil?
+      @cells[coordinates]
     end
   end
 
@@ -25,14 +27,34 @@ class Universe
 
   def out_of_bounds?(coordinates)
     @dimensions.zip(coordinates).any? do |dimension, coordinate|
-      dimension < coordinate
+      dimension <= coordinate || coordinate < 0
     end
   end
 
-  def add_living_cells(living_cells)
-    @living_cells = Hash.new
-    living_cells.each { |living_cell|
-      @living_cells[living_cell.location] = living_cell unless out_of_bounds?(living_cell.location)
+  def add_cells(living_cells_locations)
+    @cells = Hash.new
+    living_cells_locations.each { |location|
+      add_or_increment_neighbouring_cells(location)
+      if !out_of_bounds?(location) && @cells[location].nil?
+        @cells[location] = Cell.alive(location)
+      elsif !out_of_bounds?(location) && !@cells[location].nil?
+        @cells[location].resurrect
+      end
     }
+  end
+
+  def add_or_increment_neighbouring_cells(location)
+    neighbouring_positions(location).each do |position|
+      @cells[position] = Cell.dead(position) if @cells[position].nil? && !out_of_bounds?(position)
+      @cells[position].increment_neighbour unless @cells[position].nil?
+    end
+  end
+
+  def neighbouring_positions(location)
+    x = location[0]
+    y = location[1]
+    [[x-1, y-1], [x, y-1], [x+1, y-1],
+     [x-1, y], [x+1, y],
+     [x-1, y+1], [x, y+1], [x+1, y+1]]
   end
 end
