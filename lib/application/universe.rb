@@ -22,6 +22,14 @@ class Universe
     end
   end
 
+  def tick
+    cells_location = @cells.values.collect do |cell|
+      new_cell = cell.tick
+      new_cell.location if new_cell.status == Cell::ALIVE
+    end
+    add_cells(cells_location.compact)
+  end
+
 
   private
 

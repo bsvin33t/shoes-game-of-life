@@ -93,4 +93,14 @@ describe '2D Universe' do
     end
   end
 
+  context 'tick' do
+    it 'changes the state of the cells in the universe' do
+      dimension = [10, 10]
+      live_cells = [[0, 0], [1, 0], [0,1]]
+      universe = Universe.new(dimension, live_cells)
+      universe.tick
+      expect(universe.living_cells.count).to eq(4)
+    end
+  end
+
 end
