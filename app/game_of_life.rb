@@ -21,7 +21,6 @@ Shoes.app(title: 'The Game of Life', width: 800, height: 620, resizable: true) d
     stack do
       @run_button = button('Run', width: 100) { play }
       @stop_button = button('Stop', width: 100) { stop }
-      @clear_button = button('Clear', width: 100) { clear }
       @stop_button.hide
     end
   end
@@ -34,13 +33,6 @@ Shoes.app(title: 'The Game of Life', width: 800, height: 620, resizable: true) d
 
   def stop
     @animate = false
-    @stop_button.hide
-    @run_button.show
-  end
-
-  def clear
-    @animate = false
-    @universe.clear
     @stop_button.hide
     @run_button.show
   end

@@ -12,13 +12,12 @@ class ShoeUniverse < Universe
 
   def draw
     @cells.each do |location, cell|
-      if living_cells_locations.any? { |live_location| live_location ==location }
+      if any_living_cell_in_current_location?(location)
         @shoe_cells[location].resurrect
-        @shoe_cells[location].draw
       else
         @shoe_cells[location].kill
-        @shoe_cells[location].draw
       end
+      @shoe_cells[location].draw
     end
   end
 
@@ -33,6 +32,10 @@ class ShoeUniverse < Universe
   end
 
   private
+
+  def any_living_cell_in_current_location?(location)
+    living_cells_locations.any? { |live_location| live_location == location }
+  end
 
   def clean_up
     living_cells_locations.each do |location|
