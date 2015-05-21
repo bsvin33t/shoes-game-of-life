@@ -62,34 +62,37 @@ describe Cell do
 
   it 'should die in the next tick if neighbour population is one' do
     cell = Cell.alive(5, 10)
-    1.times {cell.increment_neighbour}
+    1.times { cell.increment_neighbour }
     expect(cell.tick).to eq(Cell.dead(5, 10))
   end
 
   it 'should live in the next tick if the neighbour population is two' do
     cell = Cell.alive(5, 10)
-    2.times {cell.increment_neighbour}
+    2.times { cell.increment_neighbour }
     expect(cell.tick).to eq(Cell.alive(5, 10))
   end
 
   it 'should live in the next tick if the neighbour population is three' do
     cell = Cell.alive(5, 10)
-    3.times {cell.increment_neighbour}
+    3.times { cell.increment_neighbour }
     expect(cell.tick).to eq(Cell.alive(5, 10))
   end
 
   it 'should die in the next tick if neighbour population is four' do
     cell = Cell.alive(5, 10)
-    4.times {cell.increment_neighbour}
+    4.times { cell.increment_neighbour }
     expect(cell.tick).to eq(Cell.dead(5, 10))
   end
 
   it 'should become a live cell on the next tick if the neighbour population is excatly three' do
     cell = Cell.dead(5, 10)
-    3.times {cell.increment_neighbour}
+    3.times { cell.increment_neighbour }
     expect(cell.tick).to eq(Cell.alive(5, 10))
   end
 
-
+  it 'should let other systems know if it is alive' do
+    cell = Cell.alive(5, 10)
+    expect(cell).to be_alive
+  end
 
 end

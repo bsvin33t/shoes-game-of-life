@@ -14,39 +14,18 @@ describe '2D Universe' do
     expect(universe).not_to be_valid
   end
 
-  it 'should contain a living cell at a seeded location which is within the dimension' do
-    dimension = [10, 10]
-    cells = [[5, 4]]
-    universe = Universe.new(dimension, cells)
-    expect(universe.cell_at(5, 4)).to be_a_kind_of(Cell)
-  end
-
-  it 'should not contain a cell in an unseeded position' do
-    dimension = [10, 10]
-    cells = [[4, 4]]
-    universe = Universe.new(dimension, cells)
-    expect(universe.cell_at(8, 8)).to be(nil)
-  end
-
-  it 'should not contain a cell if the given location is beyond the dimension' do
-    dimension = [10, 10]
-    universe = Universe.new(dimension)
-    expect(universe.cell_at(100, 100)).to be(nil)
-  end
-
   it 'should be seedable with live cells in given dimensions' do
     dimension = [10, 10]
-    living_cells = [Cell.alive(1, 2), Cell.alive(0, 5)]
     living_cell_locations = [[1, 2], [0, 5]]
     universe = Universe.new(dimension, living_cell_locations)
-    expect(universe.living_cells).to match_array(living_cells)
+    expect(universe.living_cells_locations).to match_array(living_cell_locations)
   end
 
   it 'should not be seeded with live cells which are beyond the dimnsions' do
     dimension = [10, 10]
     living_cell_locations = [[1, 2], [100, 5]]
     universe = Universe.new(dimension, living_cell_locations)
-    expect(universe.living_cells).to match_array([Cell.alive(1, 2)])
+    expect(universe.living_cells_locations).to match_array([[1, 2]])
   end
 
   context 'when seeding with live cells' do
@@ -96,10 +75,36 @@ describe '2D Universe' do
   context 'tick' do
     it 'changes the state of the cells in the universe' do
       dimension = [10, 10]
-      live_cells = [[0, 0], [1, 0], [0,1]]
+      live_cells = [[0, 0], [1, 0], [0, 1]]
       universe = Universe.new(dimension, live_cells)
       universe.tick
-      expect(universe.living_cells.count).to eq(4)
+      expect(universe.living_cells_locations.count).to eq(4)
+    end
+
+    it 'changes the state of a single cell' do
+      dimension = [10, 10]
+      live_cells = [[0, 0]]
+      universe = Universe.new(dimension, live_cells)
+      universe.tick
+      expect(universe.cells.count).to eq(4)
+    end
+
+    it 'changes the state of two cells in the universe' do
+      dimension = [10, 10]
+      live_cells = [[0, 0], [0, 1]]
+      universe = Universe.new(dimension, live_cells)
+      universe.tick
+      expect(universe.cells.count).to eq(6)
+    end
+  end
+
+  describe 'clear' do
+    it 'should clear the universe from all cells' do
+      dimension = [10, 10]
+      live_cells = [[0, 0], [0, 1]]
+      universe = Universe.new(dimension, live_cells)
+      universe.clear
+      expect(universe.cells.count).to eq(0)
     end
   end
 

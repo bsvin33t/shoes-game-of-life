@@ -42,4 +42,8 @@ class Cell
   def resurrect
     @status = ALIVE
   end
+
+  def alive?
+    @status == ALIVE
+  end
 end
